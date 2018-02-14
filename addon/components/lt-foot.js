@@ -35,11 +35,5 @@ export default Component.extend(TableHeaderMixin, {
   layout,
   classNames: ['lt-foot-wrap'],
   table: null,
-  sharedOptions: null,
-
-  init() {
-    this._super(...arguments);
-
-    trySet(this, 'sharedOptions.fixedFooter', get(this, 'fixed'));
-  }
+  sharedOptions: null
 });
