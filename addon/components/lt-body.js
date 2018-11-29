@@ -218,7 +218,11 @@ export default Component.extend({
    * @default false
    * @private
    */
-  useVirtualScrollbar: false,
+  useVirtualScrollbar: computed('sharedOptions.{fixedHeader,fixedFooter}', function() {
+    let { fixedHeader, fixedFooter } = this.get('sharedOptions');
+
+    return fixedHeader || fixedFooter;
+  }),
 
   /**
    * Set this property to scroll to a specific px offset.
@@ -331,17 +335,6 @@ export default Component.extend({
 
   _prevSelectedIndex: -1,
 
-  init() {
-    this._super(...arguments);
-
-    /*
-      We can only set `useVirtualScrollbar` once all contextual components have
-      been initialized since fixedHeader and fixedFooter are set on t.head and t.foot
-      initialization.
-     */
-    run.once(this, this._setupVirtualScrollbar);
-  },
-
   didReceiveAttrs() {
     this._super(...arguments);
     this.setupScrollOffset();
@@ -350,11 +343,6 @@ export default Component.extend({
   destroy() {
     this._super(...arguments);
     this._cancelTimers();
-  },
-
-  _setupVirtualScrollbar() {
-    let { fixedHeader, fixedFooter } = this.get('sharedOptions');
-    this.set('useVirtualScrollbar', fixedHeader || fixedFooter);
   },
 
   onRowsChange: observer('rows.[]', function() {

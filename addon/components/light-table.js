@@ -180,6 +180,9 @@ const LightTable = Component.extend({
    */
   estimatedRowHeight: 0,
 
+  fixedHeader: false,
+  fixedFooter: false,
+
   /**
    * Table component shared options
    *
@@ -187,11 +190,11 @@ const LightTable = Component.extend({
    * @type {Object}
    * @private
    */
-  sharedOptions: computed(function() {
+  sharedOptions: computed('fixedHeader', 'fixedFooter', function() {
     return {
       height: this.get('height'),
-      fixedHeader: false,
-      fixedFooter: false,
+      fixedHeader: this.get('fixedHeader'),
+      fixedFooter: this.get('fixedFooter'),
       occlusion: this.get('occlusion'),
       estimatedRowHeight: this.get('estimatedRowHeight')
     };
